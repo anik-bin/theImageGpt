@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import { useState } from 'react';
 import axios from 'axios';
+import { getRandomPrompt } from '@/lib/prompt';
 import { useSession } from 'next-auth/react'
 
 import {
@@ -25,6 +26,11 @@ export default function Generate() {
   const [loading, setLoading] = useState(false);
 
   const [photo, setPhoto] = useState<string[]>([]);
+
+  const generateRandomPrompt = () => {
+    const randomPrompt = getRandomPrompt(inputPrompt.prompt);
+    setInputPrompt({ ...inputPrompt, prompt: randomPrompt });
+  };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -51,16 +57,20 @@ export default function Generate() {
           <main className='flex flex-col gap-8 justify-center items-center pt-10'>
             <h1 className='text-4xl text-black font-bold'>Generate Image</h1>
 
+            <label htmlFor="randomPrompt">Generate a <span className='bg-gray-200 text-black p-2 text-sm rounded-lg cursor-pointer hover:bg-gray-300' onClick={generateRandomPrompt}>Random Prompt</span></label>
             <form onSubmit={handleSubmit} className='flex gap-4'>
-              <input
-                className='p-4 border-none rounded-lg mb-4 text-black shadow-lg'
-                type="text"
-                value={inputPrompt.prompt}
-                placeholder='type something here'
-                onChange={(e) => {
-                  setInputPrompt({ ...inputPrompt, prompt: e.target.value })
-                }}
-              />
+              <div className='w-52 lg:w-96 md:w-64'>
+                <input
+                  className='p-4 border-none rounded-lg mb-4 text-black shadow-lg box-border w-full'
+                  type="text"
+                  value={inputPrompt.prompt}
+                  placeholder='or type something here'
+                  onChange={(e) => {
+                    setInputPrompt({ ...inputPrompt, prompt: e.target.value })
+                  }}
+                />
+              </div>
+
 
               <button type="submit" className='p-2 border bg-gray-300 border-gray-300 rounded-lg mb-4'>Generate</button>
             </form>
