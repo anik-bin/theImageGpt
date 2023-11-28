@@ -4,6 +4,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import { getRandomPrompt } from '@/lib/prompt';
 import { useSession } from 'next-auth/react'
+import { InfinitySpin } from 'react-loader-spinner';
+import noImage from "@/app/assets/no-image.png"
+import { Button } from '@/components/ui/button';
+import { Download } from 'lucide-react';
 
 import {
   Card,
@@ -55,7 +59,6 @@ export default function Generate() {
         <Navbar />
         <div className='bg-white'>
           <main className='flex flex-col gap-8 justify-center items-center pt-10'>
-            <h1 className='text-4xl text-black font-bold'>Generate Image</h1>
 
             <label htmlFor="randomPrompt">Generate a <span className='bg-gray-200 text-black p-2 text-sm rounded-lg cursor-pointer hover:bg-gray-300' onClick={generateRandomPrompt}>Random Prompt</span></label>
             <form onSubmit={handleSubmit} className='flex gap-4'>
@@ -64,7 +67,7 @@ export default function Generate() {
                   className='p-4 border-none rounded-lg mb-4 text-black shadow-lg box-border w-full'
                   type="text"
                   value={inputPrompt.prompt}
-                  placeholder='or type something here'
+                  placeholder='or type something here....'
                   onChange={(e) => {
                     setInputPrompt({ ...inputPrompt, prompt: e.target.value })
                   }}
@@ -75,19 +78,44 @@ export default function Generate() {
               <button type="submit" className='p-2 border bg-gray-300 border-gray-300 rounded-lg mb-4'>Generate</button>
             </form>
 
-            <h1>{loading ? "Image is generating" : "Image is generated"}</h1>
-            <div>
-              {photo.map((src) => (
-                <Card key={src}>
-                  <CardHeader>
-                    <CardTitle>{inputPrompt.prompt}</CardTitle>
-                  </CardHeader>
-                  <Image
-                    alt="photo"
-                    src={src}
-                    width={512}
-                    height={512}
+            {loading &&
+              (
+                <div className='flex items-center justify-center'>
+                  <InfinitySpin
+                    width='300'
+                    color="#0085FF"
                   />
+                </div>
+              )}
+
+            {photo.length === 0 && !loading && (
+              <Image
+                src={noImage}
+                alt="no image"
+                width={256}
+                height={256}
+              />
+            )}
+            {/* <h1>{loading ? "Image is generating" : "Image is generated"}</h1> */}
+            <div className='flex flex-row gap-6'>
+              {photo.map((src) => (
+                <Card key={src} className='rounded-lg overflow-hidden'>
+                  <CardHeader>
+                    <CardTitle className='text-xs text-black'>Here is your photo</CardTitle>
+                  </CardHeader>
+                  <div className="relative aspect-square">
+                    <Image
+                      fill
+                      alt="Photo"
+                      src={src}
+                    />
+                  </div>
+                  <CardFooter className="p-2">
+                    <Button onClick={() => window.open(src)} variant="secondary" className="w-full">
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </Button>
+                  </CardFooter>
                 </Card>
               ))}
             </div>
