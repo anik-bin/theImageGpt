@@ -14,12 +14,12 @@ export async function POST(request: NextRequest) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
         const reqBody = await request.json();
-        const {prompt} = reqBody;
+        const {prompt, amount=1, resolution="256x256"} = reqBody;
 
         const res = await openai.images.generate({
             prompt: prompt,
-            n:1,
-            size:"256x256"
+            n: parseInt(amount, 10), // Convert amount to an integer, default to 1 if not provided
+            size: resolution,
         })
 
         console.log(res);

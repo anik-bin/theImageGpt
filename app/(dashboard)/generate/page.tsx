@@ -8,6 +8,7 @@ import { InfinitySpin } from 'react-loader-spinner';
 import noImage from "@/app/assets/no-image.png"
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
+import { amountOptions, resolutionOptions } from '@/app/constants/constants';
 
 import {
   Card,
@@ -22,9 +23,10 @@ import GoogleButton from '@/components/GoogleButton'
 export default function Generate() {
 
   const { status } = useSession();
-
   const [inputPrompt, setInputPrompt] = useState({
-    prompt: ""
+    prompt: "",
+    amount: amountOptions[0].value, // Default value for the number of images
+    resolution: resolutionOptions[0].value,
   });
 
   const [loading, setLoading] = useState(false);
@@ -60,29 +62,61 @@ export default function Generate() {
         <div className='bg-white'>
           <main className='flex flex-col gap-8 justify-center items-center pt-10'>
 
-            <label htmlFor="randomPrompt">Generate a <span className='bg-gray-200 text-black p-2 text-sm rounded-lg cursor-pointer hover:bg-gray-300' onClick={generateRandomPrompt}>Random Prompt</span></label>
-            <form onSubmit={handleSubmit} className='flex gap-4'>
-              <div className='w-52 lg:w-96 md:w-64'>
+            <label htmlFor="randomPrompt">Generate a <button className='bg-gray-200 text-black p-2 text-sm rounded-lg cursor-pointer hover:bg-gray-300' onClick={generateRandomPrompt} disabled={loading}>Random Prompt</button></label>
+            <form onSubmit={handleSubmit}>
+              <div className='w-screen flex items-center justify-center gap-4'>
                 <input
-                  className='p-4 border-none rounded-lg mb-4 text-black shadow-lg box-border w-full'
+                  className='p-4 border-none rounded-lg mb-4 text-black shadow-lg box-border w-1/2'
                   type="text"
                   value={inputPrompt.prompt}
                   placeholder='or type something here....'
                   onChange={(e) => {
                     setInputPrompt({ ...inputPrompt, prompt: e.target.value })
                   }}
+                  disabled={loading}
                 />
+
+                <button type="submit" disabled={loading} className='p-2 border bg-gray-300 border-gray-300 rounded-lg mb-4'>Generate</button>
               </div>
 
+              <div className='flex flex-row items-center justify-center gap-6'>
 
-              <button type="submit" className='p-2 border bg-gray-300 border-gray-300 rounded-lg mb-4'>Generate</button>
+                <select
+                  disabled={loading}
+                  defaultValue={inputPrompt.amount}
+                  value={inputPrompt.amount}
+                  onChange={(e) => setInputPrompt({ ...inputPrompt, amount: e.target.value })}
+                  className='p-2 px-2 rounded-md border border-slate-800'
+                >
+                  {amountOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  disabled={loading}
+                  defaultValue={inputPrompt.resolution}
+                  value={inputPrompt.resolution}
+                  onChange={(e) => setInputPrompt({ ...inputPrompt, resolution: e.target.value })}
+                  className='p-2 px-2 rounded-md border border-slate-800'
+                >
+                  {resolutionOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
             </form>
 
             {loading &&
               (
                 <div className='flex items-center justify-center'>
                   <InfinitySpin
-                    width='300'
+                    width='140'
                     color="#0085FF"
                   />
                 </div>
@@ -96,14 +130,14 @@ export default function Generate() {
                 height={256}
               />
             )}
-            {/* <h1>{loading ? "Image is generating" : "Image is generated"}</h1> */}
+            
             <div className='flex flex-row gap-6'>
               {photo.map((src) => (
                 <Card key={src} className='rounded-lg overflow-hidden'>
                   <CardHeader>
                     <CardTitle className='text-xs text-black'>Here is your photo</CardTitle>
                   </CardHeader>
-                  <div className="relative aspect-square">
+                  <div className="relative aspect-square w-64 h-64">
                     <Image
                       fill
                       alt="Photo"
