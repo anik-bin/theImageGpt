@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { useState } from 'react';
 import axios from 'axios';
 import { getRandomPrompt } from '@/lib/prompt';
-import { useSession } from 'next-auth/react'
 import { InfinitySpin } from 'react-loader-spinner';
 import noImage from "@/app/assets/no-image.png"
 import { Button } from '@/components/ui/button';
@@ -18,11 +17,9 @@ import {
 } from "@/components/ui/card";
 
 import Navbar from '@/components/Navbar';
-import GoogleButton from '@/components/GoogleButton'
 
 export default function Generate() {
 
-  const { status } = useSession();
   const [inputPrompt, setInputPrompt] = useState({
     prompt: "",
     amount: amountOptions[0].value, // Default value for the number of images
@@ -41,21 +38,24 @@ export default function Generate() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    try {
-      setLoading(true);
-      setPhoto([]);
-      const response = await axios.post("/api/users/generate", inputPrompt);
+    if (inputPrompt.prompt) {
+      try {
+        setLoading(true);
+        setPhoto([]);
+        const response = await axios.post("/api/users/generate", inputPrompt);
 
-      const urls = response.data.map((image: { url: string }) => image.url);
-      setPhoto(urls);
-    } catch (error: any) {
-      console.error(error.message);
-    } finally {
-      setLoading(false);
+        const urls = response.data.map((image: { url: string }) => image.url);
+        setPhoto(urls);
+      } catch (error: any) {
+        console.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert("Please enter a prompt");
     }
   }
 
-  if (status === "authenticated") {
     return (
       <>
         <Navbar />
@@ -157,21 +157,21 @@ export default function Generate() {
         </div>
       </>
     )
-  } else {
-    return (
-      <>
-        <Navbar />
-        <main className='flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-40 sm:mb-0 mb-8'>
-          <h1 className='mx-auto max-w-[620px] font-display text-3xl font-bold sm:text-6xl mb-8'>Generate your favourite <span className='text-blue-700'>images</span> in seconds</h1>
+  
+    // return (
+    //   <>
+    //     <Navbar />
+    //     <main className='flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-40 sm:mb-0 mb-8'>
+    //       <h1 className='mx-auto max-w-[620px] font-display text-3xl font-bold sm:text-6xl mb-8'>Generate your favourite <span className='text-blue-700'>images</span> in seconds</h1>
 
-          <p className='mx-auto max-w-[620px] font-display text-lg mb-8'>Sign in below using Google to create a free account to generate images. You will get <b>3 generations</b> free</p>
+    //       <p className='mx-auto max-w-[620px] font-display text-lg mb-8'>Sign in below using Google to create a free account to generate images. You will get <b>3 generations</b> free</p>
 
-          <GoogleButton />
-        </main>
-      </>
+    //       <GoogleButton />
+    //     </main>
+    //   </>
 
-    )
-  }
+    // )
+  
 
 
 }
