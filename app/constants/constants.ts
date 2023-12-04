@@ -36,3 +36,5 @@ export const resolutionOptions = [
         label: "1024x1024"
     }
 ]
+
+export const MAX_FREE_CREDITS = 4;

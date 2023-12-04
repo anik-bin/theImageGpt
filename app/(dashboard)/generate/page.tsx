@@ -15,10 +15,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-import Navbar from '@/components/Navbar';
+import { useRouter } from 'next/navigation';
+import { useProText } from '@/hooks/pro-text';
 
 export default function Generate() {
+
+  const proText = useProText();
+
+  const router = useRouter();
 
   const [inputPrompt, setInputPrompt] = useState({
     prompt: "",
@@ -47,9 +51,12 @@ export default function Generate() {
         const urls = response.data.map((image: { url: string }) => image.url);
         setPhoto(urls);
       } catch (error: any) {
-        console.error(error.message);
+          if (error?.response?.status === 403) {
+            proText.onOpen();
+          }
       } finally {
         setLoading(false);
+        router.refresh();
       }
     } else {
       alert("Please enter a prompt");
@@ -58,15 +65,13 @@ export default function Generate() {
 
     return (
       <>
-        <Navbar />
-        <div className='bg-white'>
           <main className='flex flex-col gap-8 justify-center items-center pt-10'>
 
             <label htmlFor="randomPrompt">Generate a <button className='bg-gray-200 text-black p-2 text-sm rounded-lg cursor-pointer hover:bg-gray-300' onClick={generateRandomPrompt} disabled={loading}>Random Prompt</button></label>
             <form onSubmit={handleSubmit}>
               <div className='w-screen flex items-center justify-center gap-4'>
                 <input
-                  className='p-4 border-none rounded-lg mb-4 text-black shadow-lg box-border w-1/2'
+                className='p-4 border-none rounded-lg mb-4 text-black dark:bg-[#F4F4F4] shadow-lg box-border w-1/2'
                   type="text"
                   value={inputPrompt.prompt}
                   placeholder='or type something here....'
@@ -154,7 +159,6 @@ export default function Generate() {
               ))}
             </div>
           </main>
-        </div>
       </>
     )
   
