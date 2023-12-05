@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
-
 export default function Home() {
 
   const {userId} = auth();

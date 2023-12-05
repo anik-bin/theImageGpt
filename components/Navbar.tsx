@@ -27,10 +27,10 @@ const Navbar = ({ apiLimitCredits = 0 }: NavbarProps) => {
   const { user, isLoaded } = useUser();
 
   return (
-    <nav className="bg-white dark:bg-[#07001f] p-4 pt-6">
+    <nav className="p-4 pt-6">
       <div className="container mx-auto flex justify-between items-center">
         <Link href={"/"}>
-          <div className="text-black dark:text-white text-lg font-bold">ImageGPT</div>
+          <div className="text-black dark:text-white text-lg font-bold">theImageGPT</div>
         </Link>
         <div className="lg:hidden">
           <button className="text-black" onClick={toggleMenu}>

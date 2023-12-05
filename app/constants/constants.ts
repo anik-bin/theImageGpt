@@ -12,11 +12,6 @@ export const amountOptions = [
     {
         value: "3",
         label: "3 Photos"
-    },
-
-    {
-        value: "4",
-        label: "4 Photos"
     }
 ];
 
@@ -37,4 +32,4 @@ export const resolutionOptions = [
     }
 ]
 
-export const MAX_FREE_CREDITS = 4;
+export const MAX_FREE_CREDITS = 3;

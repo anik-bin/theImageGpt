@@ -6,6 +6,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import Navbar from '@/components/Navbar'
 import { getApiLimitCredits } from '@/lib/apiLimit'
 import { ProTextProvider } from '@/components/pro-text-provider'
+import { Footer } from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,7 +28,7 @@ const RootLayout = async ({
         <body className={inter.className}>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >

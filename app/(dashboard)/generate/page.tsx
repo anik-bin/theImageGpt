@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/card";
 import { useRouter } from 'next/navigation';
 import { useProText } from '@/hooks/pro-text';
+import { Footer } from '@/components/Footer';
 
 export default function Generate() {
 
@@ -65,13 +66,13 @@ export default function Generate() {
 
     return (
       <>
-          <main className='flex flex-col gap-8 justify-center items-center pt-10'>
+        <main className='flex flex-col gap-8 justify-center items-center pt-10 mb-10  '>
 
-            <label htmlFor="randomPrompt">Generate a <button className='bg-gray-200 text-black p-2 text-sm rounded-lg cursor-pointer hover:bg-gray-300' onClick={generateRandomPrompt} disabled={loading}>Random Prompt</button></label>
+            <label htmlFor="randomPrompt">Generate a <button className='bg-gray-200 dark:bg-white text-black p-2 text-sm rounded-lg cursor-pointer hover:bg-gray-300 disabled:cursor-not-allowed' onClick={generateRandomPrompt} disabled={loading}>Random Prompt</button></label>
             <form onSubmit={handleSubmit}>
               <div className='w-screen flex items-center justify-center gap-4'>
                 <input
-                className='p-4 border-none rounded-lg mb-4 text-black dark:bg-[#F4F4F4] shadow-lg box-border w-1/2'
+                className='p-4 border-none rounded-lg mb-4 text-black dark:bg-[#F4F4F4] shadow-lg box-border w-1/2 outline-none'
                   type="text"
                   value={inputPrompt.prompt}
                   placeholder='or type something here....'
@@ -81,7 +82,7 @@ export default function Generate() {
                   disabled={loading}
                 />
 
-                <button type="submit" disabled={loading} className='p-2 border bg-gray-300 border-gray-300 rounded-lg mb-4'>Generate</button>
+                <button type="submit" disabled={loading} className='p-2 border bg-gray-300 border-gray-300 rounded-lg mb-4 dark:bg-white dark:text-black'>Generate</button>
               </div>
 
               <div className='flex flex-row items-center justify-center gap-6'>
@@ -91,7 +92,7 @@ export default function Generate() {
                   defaultValue={inputPrompt.amount}
                   value={inputPrompt.amount}
                   onChange={(e) => setInputPrompt({ ...inputPrompt, amount: e.target.value })}
-                  className='p-2 px-2 rounded-md border border-slate-800'
+                  className='p-2 px-2 rounded-md border border-slate-800 dark:bg-white dark:text-black'
                 >
                   {amountOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -105,7 +106,7 @@ export default function Generate() {
                   defaultValue={inputPrompt.resolution}
                   value={inputPrompt.resolution}
                   onChange={(e) => setInputPrompt({ ...inputPrompt, resolution: e.target.value })}
-                  className='p-2 px-2 rounded-md border border-slate-800'
+                className='p-2 px-2 rounded-md border border-slate-800 dark:bg-white dark:text-black'
                 >
                   {resolutionOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -150,7 +151,7 @@ export default function Generate() {
                     />
                   </div>
                   <CardFooter className="p-2">
-                    <Button onClick={() => window.open(src)} variant="secondary" className="w-full">
+                    <Button onClick={() => window.open(src)} variant="secondary" className="w-full dark:bg-white dark:text-black">
                       <Download className="h-4 w-4 mr-2" />
                       Download
                     </Button>
@@ -159,23 +160,7 @@ export default function Generate() {
               ))}
             </div>
           </main>
+        <Footer />
       </>
     )
-  
-    // return (
-    //   <>
-    //     <Navbar />
-    //     <main className='flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-40 sm:mb-0 mb-8'>
-    //       <h1 className='mx-auto max-w-[620px] font-display text-3xl font-bold sm:text-6xl mb-8'>Generate your favourite <span className='text-blue-700'>images</span> in seconds</h1>
-
-    //       <p className='mx-auto max-w-[620px] font-display text-lg mb-8'>Sign in below using Google to create a free account to generate images. You will get <b>3 generations</b> free</p>
-
-    //       <GoogleButton />
-    //     </main>
-    //   </>
-
-    // )
-  
-
-
 }
