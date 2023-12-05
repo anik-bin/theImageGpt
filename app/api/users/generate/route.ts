@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
 
         await increaseApiLimit();
 
-        console.log(res);
+        // console.log(res);
         return NextResponse.json(res.data)
     } catch (error:any) {
         return NextResponse.json({error: error.message}, {status: 500});
