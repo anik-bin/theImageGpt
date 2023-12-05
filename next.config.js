@@ -5,7 +5,6 @@ const nextConfig = {
           "googleusercontent.com",
           "oaidalleapiprodscus.blob.core.windows.net",
           "cdn.openai.com",
-          "lh3.googleusercontent.com"
         ]
       },
 }
