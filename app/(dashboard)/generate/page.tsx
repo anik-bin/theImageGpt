@@ -25,6 +25,8 @@ export default function Generate() {
 
   const router = useRouter();
 
+  const host = process.env.NEXT_APP_PUBLIC_URL;
+
   const [inputPrompt, setInputPrompt] = useState({
     prompt: "",
     amount: amountOptions[0].value, // Default value for the number of images
@@ -47,7 +49,7 @@ export default function Generate() {
       try {
         setLoading(true);
         setPhoto([]);
-        const response = await axios.post("/api/users/generate", inputPrompt);
+        const response = await axios.post(`${host}/api/users/generate`, inputPrompt);
 
         const urls = response.data.map((image: { url: string }) => image.url);
         setPhoto(urls);
