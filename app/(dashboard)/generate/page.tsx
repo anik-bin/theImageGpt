@@ -40,6 +40,8 @@ export default function Generate() {
     setInputPrompt({ ...inputPrompt, prompt: randomPrompt });
   };
 
+  const host = process.env.MAIN_URL
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -47,7 +49,7 @@ export default function Generate() {
       try {
         setLoading(true);
         setPhoto([]);
-        const response = await axios.post("/api/users/generate", inputPrompt);
+        const response = await axios.post(`${host}/api/users/generate`, inputPrompt);
 
         const urls = response.data.map((image: { url: string }) => image.url);
         setPhoto(urls);
