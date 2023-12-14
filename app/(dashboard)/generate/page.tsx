@@ -40,7 +40,7 @@ export default function Generate() {
     setInputPrompt({ ...inputPrompt, prompt: randomPrompt });
   };
 
-  const host = process.env.MAIN_URL
+  const host = process.env.NEXT_PUBLIC_MAIN_URL
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
